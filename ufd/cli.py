@@ -178,11 +178,11 @@ def doctor() -> None:
     console.print("🔧 Checking system requirements...")
 
     python_version = sys.version_info
-    if python_version >= (3, 8):
+    if python_version >= (3, 10):
         console.print(f"[green]✓ Python {python_version.major}.{python_version.minor}[/green]")
     else:
         console.print(
-            f"[red]✗ Python {python_version.major}.{python_version.minor} (requires 3.8+)[/red]"
+            f"[red]✗ Python {python_version.major}.{python_version.minor} (requires 3.10+)[/red]"
         )
         raise typer.Exit(1)
 
