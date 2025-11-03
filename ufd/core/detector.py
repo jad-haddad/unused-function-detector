@@ -5,8 +5,9 @@ import time
 from pathlib import Path
 
 from ufd.core.lsp_client import LSPClient
+from ufd.core.lsp_utils import has_framework_decorators
 from ufd.core.models import FunctionInfo, ScanResult
-from ufd.core.utils import extract_functions, has_framework_decorators, iter_python_files
+from ufd.core.utils import extract_functions, iter_python_files
 
 logger = logging.getLogger(__name__)
 
