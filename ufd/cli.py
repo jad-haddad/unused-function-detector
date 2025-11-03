@@ -74,13 +74,6 @@ def check(
             help="Include private functions (starting with _)",
         ),
     ] = False,
-    include_fastapi: Annotated[
-        bool,
-        typer.Option(
-            "--include-fastapi",
-            help="Include FastAPI route functions",
-        ),
-    ] = False,
     output_format: Annotated[
         OutputFormat,
         typer.Option(
