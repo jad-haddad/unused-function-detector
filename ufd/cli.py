@@ -1,4 +1,4 @@
-"""CLI interface for unused function detector using Typer."""
+"""CLI interface for unused function detector."""
 
 import asyncio
 import logging

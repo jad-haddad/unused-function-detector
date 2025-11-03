@@ -1,4 +1,4 @@
-"""LSP-specific utility functions for unused function detection."""
+"""LSP-specific utility functions."""
 
 import logging
 

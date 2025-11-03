@@ -1,4 +1,4 @@
-"""Data models for unused function detection."""
+"""Data models."""
 
 from pydantic import BaseModel, Field
 
