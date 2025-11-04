@@ -3,22 +3,15 @@
 import logging
 import time
 from pathlib import Path
-from typing import Any
 
 from ufd.core.lsp_client import LSPClient
 from ufd.core.lsp_utils import has_framework_decorators
 from ufd.core.models import FunctionInfo, ScanResult
-from ufd.core.protocols import ProgressCallback
 from ufd.core.utils import extract_functions, iter_python_files
+from ufd.output.progress.callbacks import NoOpProgressCallback
+from ufd.output.progress.protocols import ProgressCallback
 
 logger = logging.getLogger(__name__)
-
-
-class NoOpProgressCallback(ProgressCallback):
-    """No-op progress callback implementation."""
-
-    def update(self, message: str, **fields: Any) -> None:
-        pass
 
 
 noop_progress_callback = NoOpProgressCallback()
