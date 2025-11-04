@@ -20,11 +20,8 @@ from rich.progress import (
 
 from ufd.core.detector import UnusedFunctionDetector
 from ufd.core.protocols import ProgressCallback
-from ufd.output.csv_formatter import CsvFormatter
-from ufd.output.enums import OutputFormat
-from ufd.output.formatters import BaseFormatter
-from ufd.output.json_formatter import JsonFormatter
-from ufd.output.tree_formatter import TreeFormatter
+from ufd.output.formatters.enums import OutputFormat
+from ufd.output.formatters.formatter_factory import get_formatter
 
 app = typer.Typer(
     name="ufd",
@@ -36,17 +33,6 @@ app = typer.Typer(
 console = Console()
 
 DEFAULT_PATH = Path(".")
-
-
-def get_formatter(output_format: OutputFormat) -> BaseFormatter:
-    """Get the appropriate formatter for the output format."""
-    formatters = {
-        OutputFormat.TREE: TreeFormatter(),
-        OutputFormat.JSON: JsonFormatter(),
-        OutputFormat.CSV: CsvFormatter(),
-    }
-
-    return formatters[output_format]
 
 
 class RichProgressCallback(ProgressCallback):

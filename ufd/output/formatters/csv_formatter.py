@@ -4,7 +4,7 @@ import csv
 from io import StringIO
 
 from ufd.core.models import ScanResult
-from ufd.output.formatters import BaseFormatter
+from ufd.output.formatters.protocols import BaseFormatter
 
 
 class CsvFormatter(BaseFormatter):

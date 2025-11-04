@@ -8,7 +8,7 @@ from rich.text import Text
 from rich.tree import Tree
 
 from ufd.core.models import ScanResult
-from ufd.output.formatters import BaseFormatter
+from ufd.output.formatters.protocols import BaseFormatter
 
 console = rich.console.Console()
 
