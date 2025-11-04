@@ -1,5 +1,5 @@
 [project]
-name = "unused-func-detector"
+name = "unused-function-detector"
 version = "0.1.0"
 description = "Find unused functions in Python codebases using LSP"
 readme = "README.md"
@@ -37,10 +37,10 @@ test = []
 ufd = "ufd.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/jad-haddad/unused-func-detector"
-Repository = "https://github.com/jad-haddad/unused-func-detector"
-Documentation = "https://github.com/jad-haddad/unused-func-detector#readme"
-"Bug Tracker" = "https://github.com/jad-haddad/unused-func-detector/issues"
+Homepage = "https://github.com/jad-haddad/unused-function-detector"
+Repository = "https://github.com/jad-haddad/unused-function-detector"
+Documentation = "https://github.com/jad-haddad/unused-function-detector#readme"
+"Bug Tracker" = "https://github.com/jad-haddad/unused-function-detector/issues"
 
 [build-system]
 requires = ["hatchling"]

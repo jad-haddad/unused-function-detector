@@ -5,6 +5,7 @@ import logging
 import shutil
 import sys
 from enum import StrEnum
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Annotated
 
@@ -166,10 +167,13 @@ def check(
     console.print("\n[green]✅ No unused functions found![/green]")
 
 
-@app.command()
-def version() -> None:
+@app.command("version")
+def cli_version() -> None:
     """Show version information."""
-    console.print("ufd v0.1.0")
+    try:
+        console.print(version("unused-function-detector"))
+    except PackageNotFoundError:
+        console.print("unknown")
 
 
 @app.command()
