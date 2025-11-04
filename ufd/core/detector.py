@@ -3,13 +3,25 @@
 import logging
 import time
 from pathlib import Path
+from typing import Any
 
 from ufd.core.lsp_client import LSPClient
 from ufd.core.lsp_utils import has_framework_decorators
 from ufd.core.models import FunctionInfo, ScanResult
+from ufd.core.protocols import ProgressCallback
 from ufd.core.utils import extract_functions, iter_python_files
 
 logger = logging.getLogger(__name__)
+
+
+class NoOpProgressCallback(ProgressCallback):
+    """No-op progress callback implementation."""
+
+    def update(self, message: str, **fields: Any) -> None:
+        pass
+
+
+noop_progress_callback = NoOpProgressCallback()
 
 
 class UnusedFunctionDetector:
@@ -30,6 +42,7 @@ class UnusedFunctionDetector:
         path: Path,
         include_tests: bool = False,
         include_private: bool = False,
+        progress_callback: ProgressCallback = noop_progress_callback,
     ) -> ScanResult:
         """
         Scan a path for unused functions.
@@ -53,7 +66,9 @@ class UnusedFunctionDetector:
 
         logger.debug(f"Found {len(files)} Python files to scan")
 
-        unused_functions, total_functions = await self._scan_files(files, include_private, path)
+        unused_functions, total_functions = await self._scan_files(
+            files, include_private, path, progress_callback
+        )
 
         scan_duration = time.time() - start_time
 
@@ -69,12 +84,14 @@ class UnusedFunctionDetector:
         files: list[Path],
         include_private: bool,
         root_path: Path,
+        progress_callback: ProgressCallback,
     ) -> tuple[list[FunctionInfo], int]:
         """Scan files for unused functions using LSP."""
         client = LSPClient(server_cmd=self.lsp_server_cmd)
         unused_functions: list[FunctionInfo] = []
         total_functions = 0
 
+        progress_callback.update("Starting LSP client/server...")
         try:
             await client.connect()
             root_uri = root_path.resolve().as_uri()
@@ -97,11 +114,16 @@ class UnusedFunctionDetector:
 
             # Wait for initial analysis to complete
             logger.debug("Waiting for LSP analysis to complete...")
+            progress_callback.update(
+                "Waiting for LSP analysis to complete...", completed=0, total=len(files)
+            )
+
             await client.wait_for_analysis_complete()
 
             # Process files sequentially like the old version
             for file_path in files:
                 logger.debug(f"Processing {file_path}")
+                progress_callback.update(f"Processing {file_path.name}...", advance=1)
 
                 try:
                     uri = file_path.resolve().as_uri()

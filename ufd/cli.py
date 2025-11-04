@@ -7,13 +7,20 @@ import sys
 from enum import StrEnum
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 import typer
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    TaskID,
+    TextColumn,
+)
 
 from ufd.core.detector import UnusedFunctionDetector
+from ufd.core.protocols import ProgressCallback
 from ufd.output.csv_formatter import CsvFormatter
 from ufd.output.formatters import BaseFormatter
 from ufd.output.json_formatter import JsonFormatter
@@ -47,6 +54,15 @@ def get_formatter(output_format: OutputFormat) -> BaseFormatter:
     }
 
     return formatters[output_format]
+
+
+class RichProgressCallback(ProgressCallback):
+    def __init__(self, progress: Progress, task_id: TaskID) -> None:
+        self.progress = progress
+        self.task_id = task_id
+
+    def update(self, message: str, **fields: Any) -> None:
+        self.progress.update(self.task_id, description=message, **fields)
 
 
 @app.command()
@@ -125,12 +141,14 @@ def check(
     )
 
     with Progress(
-        SpinnerColumn(),
+        MofNCompleteColumn(),
+        BarColumn(),
         TextColumn("[progress.description]{task.description}"),
         console=console,
         transient=True,
     ) as progress:
-        _ = progress.add_task("Scanning for unused functions...", total=None)
+        task_id = progress.add_task("Scanning for unused functions...", total=None)
+        progress_callback = RichProgressCallback(progress, task_id)
 
         try:
             result = asyncio.run(
@@ -138,6 +156,7 @@ def check(
                     path=path,
                     include_tests=include_tests,
                     include_private=include_private,
+                    progress_callback=progress_callback,
                 )
             )
         except Exception as e:
