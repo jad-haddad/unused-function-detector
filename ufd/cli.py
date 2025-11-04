@@ -161,10 +161,10 @@ def check(
 
     if result.unused_functions:
         console.print(
-            f"\n[yellow]⚠️  Found {len(result.unused_functions)} unused function(s)[/yellow]"
+            f"[yellow]⚠️  Found {len(result.unused_functions)} unused function(s)[/yellow]"
         )
         raise typer.Exit(1)
-    console.print("\n[green]✅ No unused functions found![/green]")
+    console.print("[green]✅ No unused functions found![/green]")
 
 
 @app.command("version")
