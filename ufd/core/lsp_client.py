@@ -144,7 +144,7 @@ class LSPClient:
         """Initialize the LSP server."""
         params = {
             "processId": os.getpid(),
-            "clientInfo": {"name": "unused-func-detector", "version": "0.1.0"},
+            "clientInfo": {"name": "unused-function-detector", "version": "0.1.0"},
             "rootUri": root_uri,
             "workspaceFolders": [{"uri": root_uri, "name": "workspace"}],
             "capabilities": {
