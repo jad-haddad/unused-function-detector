@@ -4,7 +4,6 @@ import asyncio
 import logging
 import shutil
 import sys
-from enum import StrEnum
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Annotated, Any
@@ -22,16 +21,10 @@ from rich.progress import (
 from ufd.core.detector import UnusedFunctionDetector
 from ufd.core.protocols import ProgressCallback
 from ufd.output.csv_formatter import CsvFormatter
+from ufd.output.enums import OutputFormat
 from ufd.output.formatters import BaseFormatter
 from ufd.output.json_formatter import JsonFormatter
 from ufd.output.tree_formatter import TreeFormatter
-
-
-class OutputFormat(StrEnum):
-    TREE = "tree"
-    JSON = "json"
-    CSV = "csv"
-
 
 app = typer.Typer(
     name="ufd",
