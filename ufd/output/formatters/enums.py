@@ -1,7 +1,7 @@
-from enum import StrEnum
+from enum import Enum
 
 
-class OutputFormat(StrEnum):
+class OutputFormat(str, Enum):
     TREE = "tree"
     JSON = "json"
     CSV = "csv"

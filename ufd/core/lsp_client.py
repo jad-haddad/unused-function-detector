@@ -84,8 +84,7 @@ class LSPClient:
         )
 
         try:
-            async with asyncio.timeout(60.0):
-                response = await future
+            response = await asyncio.wait_for(future, timeout=60)
             if "error" in response:
                 raise RuntimeError(f"LSP error for {method}: {response['error']}")
             return response.get("result", {})
@@ -133,8 +132,7 @@ class LSPClient:
     async def wait_for_analysis_complete(self) -> None:
         """Wait for analysis to complete."""
         try:
-            async with asyncio.timeout(60):
-                await self._analysis_complete_event.wait()
+            await asyncio.wait_for(self._analysis_complete_event.wait(), timeout=60)
         except TimeoutError:
             logger.warning("Timeout waiting for analysis to complete")
         finally:
