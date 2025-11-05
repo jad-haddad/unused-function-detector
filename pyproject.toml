@@ -25,13 +25,19 @@ dependencies = [
     "pydantic>=2.0.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    "ruff>=0.1.0",
-    "pre-commit>=3.0.0",
+    {include-group = "lint"},
+    {include-group = "test"},
+    "ipython",
 ]
-
-test = []
+lint = [
+    "ruff",
+    "pre-commit"
+]
+test = [
+    "pytest"
+]
 
 [project.scripts]
 ufd = "ufd.cli:app"
@@ -48,12 +54,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["ufd"]
-
-[dependency-groups]
-dev = [
-    "ruff>=0.1.0",
-    "pre-commit>=3.0.0",
-]
 
 [tool.basedpyright]
 reportAny = false
